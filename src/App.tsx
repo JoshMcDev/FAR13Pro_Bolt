@@ -44,7 +44,6 @@ import { MetricsCard } from './components/MetricsCard';
 import { WorkflowProgress } from './components/WorkflowProgress';
 import { DataVisualization } from './components/DataVisualization';
 import { AIAssistant } from './components/AIAssistant';
-import { PremiumLogo } from './components/PremiumLogo';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -113,8 +112,19 @@ function App() {
           <div className="flex justify-between items-center h-20">
             {/* Left Section - Logo and Navigation */}
             <div className="flex items-center space-x-12">
-              {/* Premium Logo */}
-              <PremiumLogo />
+              {/* Logo Section */}
+              <motion.div 
+                className="flex items-center space-x-4 py-2"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xl font-light text-white leading-tight">FAR 13 Pro</span>
+                </div>
+              </motion.div>
               
               {/* Desktop Navigation */}
               <div className="hidden lg:flex items-center space-x-8">
