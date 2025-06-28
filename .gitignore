@@ -26,3 +26,5 @@ dist-ssr
 
 NEXT_PUBLIC_SUPABASE_URL=https://kkgoeipxecvlkjwqzwst.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_Z2ygqzhtthF0Cdi6MJNRtw_Sshoc5OU
+
+.next
