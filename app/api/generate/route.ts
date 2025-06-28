@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 // Simple in-memory rate limiter (per IP, resets on server restart)
 const rateLimitMap = new Map<string, { count: number; last: number }>();
 const RATE_LIMIT = 10; // max requests
@@ -18,6 +16,7 @@ function getClientIp(req: NextRequest): string {
 }
 
 export async function POST(req: NextRequest) {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const supabase = createServerSupabaseClient();
   try {
     const body = await req.json();
