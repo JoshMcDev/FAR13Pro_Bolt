@@ -45,19 +45,12 @@ import { WorkflowProgress } from './components/WorkflowProgress';
 import { DataVisualization } from './components/DataVisualization';
 import { AIAssistant } from './components/AIAssistant';
 import { PremiumLogo } from './components/PremiumLogo';
-import { LandingPage } from './components/LandingPage';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'landing' | 'dashboard'>('dashboard');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeWorkflow, setActiveWorkflow] = useState(0);
   const [locationMode, setLocationMode] = useState('CONUS');
   const [isChatOpen, setIsChatOpen] = useState(false);
-
-  // Show landing page by default
-  if (currentView === 'landing') {
-    return <LandingPage />;
-  }
 
   const workflowPhases = [
     {
@@ -113,17 +106,9 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 font-light">
-      {/* Subtle Background Pattern */}
-      <div className="fixed inset-0 opacity-[0.02] pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-          backgroundSize: '20px 20px'
-        }}></div>
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 font-light">
       {/* Top Navigation Bar */}
-      <nav className="relative bg-slate-900/90 backdrop-blur-xl border-b border-slate-800/50 sticky top-0 z-50 shadow-2xl">
+      <nav className="relative bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-50 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Left Section - Logo and Navigation */}
@@ -137,7 +122,7 @@ function App() {
                   <motion.a
                     key={item}
                     href={`#${item.toLowerCase()}`}
-                    className="text-slate-300 hover:text-white font-light transition-colors py-2 px-1 border-b-2 border-transparent hover:border-blue-400/50"
+                    className="text-slate-300 hover:text-white font-light transition-colors py-2 px-1 border-b-2 border-transparent hover:border-purple-400"
                     whileHover={{ y: -2 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
@@ -155,10 +140,10 @@ function App() {
               </div>
               
               {/* Location Toggle */}
-              <div className="hidden md:flex items-center bg-slate-800/50 backdrop-blur-sm rounded-xl p-1 border border-slate-700/50">
+              <div className="hidden md:flex items-center bg-slate-800/50 backdrop-blur-sm rounded-lg p-1 border border-slate-700/50">
                 <button
                   onClick={() => setLocationMode('CONUS')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     locationMode === 'CONUS' 
                       ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
                       : 'text-slate-400 hover:text-white'
@@ -168,7 +153,7 @@ function App() {
                 </button>
                 <button
                   onClick={() => setLocationMode('OCONUS')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     locationMode === 'OCONUS' 
                       ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
                       : 'text-slate-400 hover:text-white'
@@ -181,14 +166,14 @@ function App() {
               {/* Notification and Settings */}
               <div className="hidden sm:flex items-center space-x-3">
                 <motion.button 
-                  className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all backdrop-blur-sm"
+                  className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all backdrop-blur-sm"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <Bell className="h-5 w-5" />
                 </motion.button>
                 <motion.button 
-                  className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all backdrop-blur-sm"
+                  className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all backdrop-blur-sm"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -199,7 +184,7 @@ function App() {
               {/* User Menu */}
               <div className="flex items-center space-x-4">
                 <motion.div 
-                  className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-slate-800/50 backdrop-blur-sm rounded-xl hover:bg-slate-700/50 transition-colors cursor-pointer border border-slate-700/50"
+                  className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg hover:bg-slate-700/50 transition-colors cursor-pointer border border-slate-700/50"
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -220,7 +205,7 @@ function App() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all"
+                className="lg:hidden p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all"
               >
                 {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -237,7 +222,7 @@ function App() {
                 className="lg:hidden border-t border-slate-700/50 py-4 space-y-2"
               >
                 {['Dashboard', 'Acquisitions', 'Documents', 'Analytics'].map((item) => (
-                  <a key={item} href={`#${item.toLowerCase()}`} className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-xl transition-colors">
+                  <a key={item} href={`#${item.toLowerCase()}`} className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-colors">
                     {item}
                   </a>
                 ))}
@@ -250,10 +235,10 @@ function App() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-slate-400">Location</span>
-                    <div className="flex items-center bg-slate-800/50 rounded-xl p-1">
+                    <div className="flex items-center bg-slate-800/50 rounded-lg p-1">
                       <button
                         onClick={() => setLocationMode('CONUS')}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                        className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
                           locationMode === 'CONUS' 
                             ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
                             : 'text-slate-400'
@@ -263,7 +248,7 @@ function App() {
                       </button>
                       <button
                         onClick={() => setLocationMode('OCONUS')}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                        className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
                           locationMode === 'OCONUS' 
                             ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' 
                             : 'text-slate-400'
@@ -291,7 +276,7 @@ function App() {
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-light text-white mb-2 bg-gradient-to-r from-white via-slate-200 to-slate-300 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-light text-white mb-2 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                 Acquisition Dashboard
               </h1>
               <p className="text-slate-400 font-light">Streamlined FAR 13 simplified acquisitions for {locationMode} operations</p>
@@ -354,7 +339,7 @@ function App() {
 
             {/* Quick Actions */}
             <motion.div 
-              className="bg-slate-800/30 backdrop-blur-xl rounded-2xl border border-slate-700/30 shadow-2xl p-6"
+              className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -364,7 +349,7 @@ function App() {
                 {quickActions.map((action, index) => (
                   <motion.button
                     key={index}
-                    className="flex flex-col items-center p-6 rounded-xl border border-slate-700/30 hover:border-slate-600/50 hover:shadow-lg transition-all group bg-slate-900/30 backdrop-blur-sm"
+                    className="flex flex-col items-center p-6 rounded-xl border border-slate-700/50 hover:border-slate-600/50 hover:shadow-lg transition-all group bg-slate-900/50 backdrop-blur-sm"
                     whileHover={{ scale: 1.05, y: -5 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
@@ -385,7 +370,7 @@ function App() {
           <div className="space-y-6">
             {/* Recent Activity */}
             <motion.div 
-              className="bg-slate-800/30 backdrop-blur-xl rounded-2xl border border-slate-700/30 shadow-2xl p-6"
+              className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -395,7 +380,7 @@ function App() {
                 {recentActivity.map((activity, index) => (
                   <motion.div 
                     key={index} 
-                    className="flex items-start space-x-3 p-3 rounded-xl hover:bg-slate-700/20 transition-colors"
+                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-slate-700/30 transition-colors"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
@@ -414,7 +399,7 @@ function App() {
 
             {/* Location Status */}
             <motion.div 
-              className="bg-slate-800/30 backdrop-blur-xl rounded-2xl border border-slate-700/30 shadow-2xl p-6"
+              className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl p-6"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -447,13 +432,13 @@ function App() {
 
             {/* AI Assistant Preview */}
             <motion.div 
-              className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/20 p-6 shadow-2xl"
+              className="bg-gradient-to-br from-purple-900/50 to-blue-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 shadow-2xl"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                   <Brain className="h-5 w-5 text-white" />
                 </div>
                 <h3 className="text-lg font-light text-white">AI Assistant</h3>
