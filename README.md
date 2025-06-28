@@ -1,105 +1,222 @@
-# FAR 13 Pro - Premium Government Acquisition Dashboard
+# FAR 13 Pro - Modern Government Acquisition Platform
 
-A cutting-edge web application designed to assist government contracting officers with simplified acquisitions utilizing FAR 13 for commercial supplies and services. Built with modern technologies and featuring a premium, production-ready design.
+A cutting-edge web application built with Next.js, NestJS, Supabase, and AI integration for government contracting officers managing FAR 13 simplified acquisitions.
 
-## 🚀 Features
-
-### Core Functionality
-- **Advanced Acquisition Workflow Management**: Interactive workflow phases with real-time progress tracking
-- **CONUS/OCONUS Location Support**: Tailored compliance rules based on operational location
-- **AI-Powered Assistance**: Integrated OpenAI and LangChain for intelligent document generation and guidance
-- **Premium Data Visualizations**: Beautiful charts and analytics with gradient accents
-- **Supabase Integration**: Real-time database with authentication and data persistence
-- **Responsive Design**: Optimized for all devices with smooth animations
-
-### Premium Design Elements
-- **Dark Theme with Gradients**: Inspired by modern dashboard aesthetics
-- **Smooth Animations**: Framer Motion powered micro-interactions
-- **Glass Morphism Effects**: Backdrop blur and translucent surfaces
-- **Gradient Accents**: Purple, blue, and vibrant color schemes
-- **Premium Typography**: Inter font with multiple weights
-- **Advanced Visual Hierarchy**: Consistent spacing and modern layout principles
-
-## 🛠 Technology Stack
+## 🚀 Tech Stack
 
 ### Frontend
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **Tailwind CSS** with custom design system
-- **Framer Motion** for animations and transitions
-- **Lucide React** for consistent iconography
-- **Recharts** for data visualization
+- **Next.js 14** - React framework with App Router and server-side rendering
+- **shadcn/ui** - Modern, accessible component library built on Radix UI
+- **Tailwind CSS** - Utility-first CSS framework with dark mode support
+- **TypeScript** - Type-safe development with enhanced IDE support
 
-### Backend & Services
-- **Supabase** for database, authentication, and real-time features
-- **OpenAI API** for AI-powered assistance
-- **LangChain** for advanced AI workflows and document processing
-- **FastAPI** integration ready for custom backend services
+### Backend
+- **NestJS** - Scalable, TypeScript-based backend framework
+- **Supabase** - PostgreSQL database with real-time subscriptions and authentication
+- **Swagger/OpenAPI** - Comprehensive API documentation
 
-### Development Tools
-- **TypeScript** for type safety
-- **ESLint** for code quality
-- **PostCSS** with Autoprefixer
-- **Modern build optimization** with code splitting
+### AI & Orchestration
+- **OpenAI API** - Advanced language model capabilities
+- **LangChain** - AI workflow management and prompt engineering
+- **Vector Search** - Semantic similarity matching for FAR regulations
 
-## 📦 Installation & Setup
+## 🏗️ Architecture
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd far-13-pro
-   ```
+### Frontend Architecture
+```
+app/
+├── globals.css          # Global styles and CSS variables
+├── layout.tsx          # Root layout with providers
+├── page.tsx            # Main dashboard page
+components/
+├── ui/                 # shadcn/ui components
+├── dashboard.tsx       # Main dashboard component
+├── navbar.tsx          # Navigation component
+├── auth-provider.tsx   # Authentication context
+└── theme-provider.tsx  # Theme management
+lib/
+├── utils.ts           # Utility functions
+└── supabase.ts        # Supabase client configuration
+services/
+├── ai.ts              # OpenAI integration
+├── langchain.ts       # LangChain workflows
+└── supabase.ts        # Database operations
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### Backend Architecture
+```
+src/
+├── main.ts                    # Application entry point
+├── app.module.ts             # Root module
+├── acquisitions/             # Acquisition management
+│   ├── acquisitions.controller.ts
+│   ├── acquisitions.service.ts
+│   └── dto/
+├── documents/                # Document management
+│   ├── documents.controller.ts
+│   ├── documents.service.ts
+│   └── dto/
+└── ai/                       # AI services
+    ├── ai.controller.ts
+    ├── ai.service.ts
+    ├── langchain.service.ts
+    └── dto/
+```
 
-3. **Environment Configuration**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Configure your environment variables:
-   - `VITE_SUPABASE_URL`: Your Supabase project URL
-   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous key
-   - `VITE_OPENAI_API_KEY`: Your OpenAI API key
+## 🛠️ Installation & Setup
 
-4. **Development Server**
-   ```bash
-   npm run dev
-   ```
+### Prerequisites
+- Node.js 18+ and npm
+- Supabase account and project
+- OpenAI API key
 
-5. **Build for Production**
-   ```bash
-   npm run build
-   ```
+### 1. Clone and Install Dependencies
+
+```bash
+# Install frontend dependencies
+npm install
+
+# Install backend dependencies
+cd backend && npm install
+```
+
+### 2. Environment Configuration
+
+Create `.env.local` in the root directory:
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# OpenAI Configuration
+OPENAI_API_KEY=your-openai-api-key
+
+# Backend API
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+Create `.env` in the `backend/` directory:
+```env
+# Supabase
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# OpenAI
+OPENAI_API_KEY=your-openai-api-key
+
+# Application
+PORT=3001
+FRONTEND_URL=http://localhost:3000
+```
+
+### 3. Database Setup
+
+Run the following SQL in your Supabase SQL editor:
+
+```sql
+-- Create acquisitions table
+CREATE TABLE acquisitions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT CHECK (status IN ('planning', 'solicitation', 'evaluation', 'awarded')) DEFAULT 'planning',
+  location_mode TEXT CHECK (location_mode IN ('CONUS', 'OCONUS')) NOT NULL,
+  estimated_value DECIMAL NOT NULL,
+  progress INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE
+);
+
+-- Create documents table
+CREATE TABLE documents (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  acquisition_id UUID REFERENCES acquisitions(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  type TEXT CHECK (type IN ('rfq', 'rfp', 'market_research', 'acquisition_plan')) NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Create workflow_items table
+CREATE TABLE workflow_items (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  acquisition_id UUID REFERENCES acquisitions(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  status TEXT CHECK (status IN ('completed', 'in-progress', 'pending')) DEFAULT 'pending',
+  phase TEXT CHECK (phase IN ('planning', 'solicitation', 'evaluation')) NOT NULL,
+  order_index INTEGER NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable Row Level Security
+ALTER TABLE acquisitions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE workflow_items ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies
+CREATE POLICY "Users can manage their own acquisitions" ON acquisitions
+  FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can manage documents for their acquisitions" ON documents
+  FOR ALL USING (
+    acquisition_id IN (
+      SELECT id FROM acquisitions WHERE user_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Users can manage workflow items for their acquisitions" ON workflow_items
+  FOR ALL USING (
+    acquisition_id IN (
+      SELECT id FROM acquisitions WHERE user_id = auth.uid()
+    )
+  );
+```
+
+### 4. Development
+
+```bash
+# Start frontend development server
+npm run dev
+
+# Start backend development server (in another terminal)
+npm run backend:dev
+```
+
+The application will be available at:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:3001
+- API Documentation: http://localhost:3001/api
 
 ## 🎨 Design System
 
 ### Color Palette
-- **Primary Gradients**: Blue to Purple, Emerald to Teal
-- **Accent Colors**: Orange to Red, Purple to Pink
-- **Background**: Dark slate with gradient overlays
-- **Text**: High contrast white and slate variations
+- **Primary**: Blue gradient (hsl(217.2 91.2% 59.8%))
+- **Secondary**: Slate variations for backgrounds and text
+- **Accent**: Purple/pink gradients for highlights
+- **Status Colors**: Green (success), Orange (warning), Red (error)
 
 ### Typography
-- **Font Family**: Inter (300, 400, 500, 600 weights)
+- **Font**: Inter with multiple weights (300, 400, 500, 600)
 - **Hierarchy**: Consistent sizing and spacing
-- **Readability**: Optimized contrast ratios
+- **Readability**: High contrast ratios for accessibility
 
-### Animations
-- **Micro-interactions**: Hover states, button presses
-- **Page Transitions**: Smooth enter/exit animations
-- **Loading States**: Skeleton screens and progress indicators
+### Components
+- Built with shadcn/ui for consistency and accessibility
+- Dark mode support throughout
+- Responsive design with mobile-first approach
+- Smooth transitions and hover states
 
-## 🤖 AI Integration
+## 🤖 AI Features
 
-### OpenAI Features
+### OpenAI Integration
 - **Document Generation**: Automated RFQ/RFP creation
 - **Compliance Checking**: FAR regulation validation
 - **Market Analysis**: Vendor landscape insights
-- **Natural Language Processing**: Conversational AI assistant
+- **Conversational AI**: Natural language assistance
 
 ### LangChain Workflows
 - **Knowledge Base**: FAR 13 regulation embeddings
@@ -107,86 +224,74 @@ A cutting-edge web application designed to assist government contracting officer
 - **Chain of Thought**: Multi-step reasoning for complex queries
 - **Vector Search**: Semantic similarity matching
 
-## 🗄 Database Schema (Supabase)
+## 🗄️ Database Schema
 
-### Tables
-- **acquisitions**: Core acquisition data and workflow status
+### Core Tables
+- **acquisitions**: Main acquisition records with status tracking
 - **documents**: Generated documents and templates
-- **users**: User profiles and permissions
-- **audit_logs**: Compliance and activity tracking
+- **workflow_items**: Individual workflow tasks and status
+- **auth.users**: Supabase authentication (built-in)
 
 ### Security
-- **Row Level Security (RLS)**: Enabled on all tables
-- **Authentication**: Supabase Auth with email/password
-- **Authorization**: Role-based access control
+- Row Level Security (RLS) enabled on all tables
+- User-based access control
+- Secure API endpoints with proper validation
 
 ## 🚀 Deployment
 
-### Netlify (Recommended)
+### Frontend (Vercel/Netlify)
 ```bash
 npm run build
-# Deploy dist/ folder to Netlify
 ```
 
-### Vercel
+### Backend (Railway/Heroku/DigitalOcean)
 ```bash
+cd backend
 npm run build
-# Deploy with Vercel CLI or GitHub integration
+npm run start:prod
 ```
 
-### Custom Server
-```bash
-npm run build
-npm run preview
-```
+### Environment Variables
+Ensure all production environment variables are configured in your deployment platform.
 
-## 🔒 Security & Compliance
+## 🧪 API Documentation
 
-### Government Standards
-- **Section 508**: Accessibility compliance
-- **FAR Requirements**: Federal Acquisition Regulation adherence
-- **FISMA**: Security framework alignment
+The backend provides comprehensive API documentation via Swagger:
+- Local: http://localhost:3001/api
+- Production: https://your-api-domain.com/api
+
+### Key Endpoints
+- `GET /acquisitions` - List user acquisitions
+- `POST /acquisitions` - Create new acquisition
+- `GET /documents` - Get documents by acquisition
+- `POST /ai/chat` - AI chat interface
+- `POST /ai/generate-document` - Generate documents with AI
+
+## 🔒 Security Features
+
+### Authentication
+- Supabase Auth with email/password
+- JWT token-based authentication
+- Secure session management
 
 ### Data Protection
-- **Encryption**: All data encrypted in transit and at rest
-- **Audit Trails**: Comprehensive logging and monitoring
-- **Access Controls**: Multi-factor authentication support
+- Row Level Security (RLS) in database
+- Input validation and sanitization
+- CORS configuration
+- Environment variable protection
 
-## 🧪 Testing
-
-```bash
-# Run linting
-npm run lint
-
-# Type checking
-npx tsc --noEmit
-
-# Build verification
-npm run build
-```
-
-## 📈 Performance
-
-### Optimization Features
-- **Code Splitting**: Automatic chunk optimization
-- **Tree Shaking**: Unused code elimination
-- **Image Optimization**: Lazy loading and compression
-- **Caching**: Service worker and CDN integration
-
-### Metrics
-- **Lighthouse Score**: 95+ across all categories
-- **Core Web Vitals**: Optimized for user experience
-- **Bundle Size**: Minimized with dynamic imports
+### Compliance
+- Government security standards alignment
+- Audit trail capabilities
+- Data encryption in transit and at rest
 
 ## 🤝 Contributing
 
-This is a prototype application. For production use, implement:
-
-1. **Backend Security**: Proper API authentication and rate limiting
-2. **Database Optimization**: Indexing and query optimization
-3. **Monitoring**: Error tracking and performance monitoring
-4. **Testing**: Unit, integration, and e2e test suites
-5. **Documentation**: API documentation and user guides
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📄 License
 
@@ -194,13 +299,12 @@ This project is designed for government use and follows applicable federal regul
 
 ## 🆘 Support
 
-For technical support or questions about implementation:
-
-1. Check the documentation and README
-2. Review the code comments and type definitions
-3. Consult the official documentation for integrated services
-4. Consider professional services for production deployment
+For technical support:
+1. Check the API documentation at `/api`
+2. Review the component documentation in `components/`
+3. Consult the database schema in this README
+4. Open an issue for bugs or feature requests
 
 ---
 
-**Note**: This is a prototype demonstrating modern web development practices for government applications. Production deployment requires additional security hardening, testing, and compliance validation.
+**Note**: This is a production-ready application demonstrating modern web development practices for government applications. Ensure proper security hardening and compliance validation before production deployment.
