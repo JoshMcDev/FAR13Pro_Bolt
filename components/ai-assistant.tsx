@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Brain, MessageSquare, ArrowRight, Zap, FileText, Search, Shield } from 'lucide-react'
+import { generateTextViaApi } from '@/services/generateTextViaApi'
 
 const quickActions = [
   { title: 'Generate RFQ', icon: FileText, description: 'Create acquisition documents' },
@@ -29,19 +30,19 @@ export function AIAssistant() {
     }
   ])
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!message.trim()) return
     
     setMessages(prev => [...prev, { type: 'user', content: message }])
     setMessage('')
     
-    // Simulate AI response
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
-        type: 'ai',
-        content: 'I understand you need help with that. Let me analyze your request and provide you with the most relevant information based on current FAR 13 regulations and best practices.'
-      }])
-    }, 1000)
+    // Call the API route for AI response
+    try {
+      const aiResponse = await generateTextViaApi(message)
+      setMessages(prev => [...prev, { type: 'ai', content: aiResponse }])
+    } catch (error) {
+      setMessages(prev => [...prev, { type: 'ai', content: 'Sorry, there was an error generating a response.' }])
+    }
   }
 
   return (

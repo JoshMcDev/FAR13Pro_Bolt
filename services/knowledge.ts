@@ -1,4 +1,3 @@
-import OpenAI from 'openai'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
@@ -25,49 +24,18 @@ const farKnowledgeBase = [
 ]
 
 export class KnowledgeService {
-  // Add a document to Supabase with its embedding
+  // Add a document to Supabase
   async addDocument(section: string, title: string, content: string) {
-    const embedding = await this.getEmbedding(content)
-    const { error } = await supabase.from('documents').insert([
-      { section, title, content, embedding }
-    ])
-    if (error) throw error
-  }
-
-  // Get OpenAI embedding for a string
-  async getEmbedding(text: string): Promise<number[]> {
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    const res = await openai.embeddings.create({
-      model: 'text-embedding-ada-002',
-      input: text
-    })
-    return res.data[0].embedding
+    // You will need to provide the embedding from the server/API route in the future
+    // For now, this is a placeholder
+    throw new Error('addDocument now requires an embedding, please update to use a server-side API route.');
   }
 
   // Search for similar documents using Supabase vector search
   async searchDocuments(query: string, k = 3) {
-    const queryEmbedding = await this.getEmbedding(query)
-    const { data, error } = await supabase.rpc('match_documents', {
-      query_embedding: queryEmbedding,
-      match_count: k
-    })
-    if (error) throw error
-    return data
-  }
-
-  // Generate text with OpenAI (for plans, RFQs, compliance, etc.)
-  async generateText(prompt: string, model = 'gpt-4') {
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    const completion = await openai.chat.completions.create({
-      model,
-      messages: [
-        { role: 'system', content: 'You are an expert government contracting officer.' },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 1500
-    })
-    return completion.choices[0]?.message?.content || ''
+    // You will need to provide the embedding from the server/API route in the future
+    // For now, this is a placeholder
+    throw new Error('searchDocuments now requires an embedding, please update to use a server-side API route.');
   }
 }
 
