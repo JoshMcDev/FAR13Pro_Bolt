@@ -20,7 +20,7 @@ export function Dashboard() {
             Acquisition Dashboard
           </h1>
           <p className="text-muted-foreground mt-2">
-            Streamlined FAR 13 simplified acquisitions for CONUS operations
+            Streamlined FAR 13 acquisitions for operations and training.
           </p>
         </div>
         <Button className="bg-gradient-to-r from-primary to-primary/80">
