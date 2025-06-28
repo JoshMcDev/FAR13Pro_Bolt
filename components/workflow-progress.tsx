@@ -10,24 +10,24 @@ const workflowPhases = [
   {
     id: 'planning',
     title: 'Requirements & Planning',
-    status: 'active' as const,
-    progress: 75,
+    status: 'completed' as const,
+    progress: 100,
     items: [
       { name: 'Technical Specifications', status: 'completed' as const, icon: Brain },
       { name: 'Market Research Report', status: 'completed' as const, icon: Search },
-      { name: 'Acquisition Plan', status: 'in-progress' as const, icon: FileText },
-      { name: 'Small Business Analysis', status: 'pending' as const, icon: Building2 }
+      { name: 'Acquisition Plan', status: 'completed' as const, icon: FileText },
+      { name: 'Small Business Analysis', status: 'completed' as const, icon: Building2 }
     ]
   },
   {
     id: 'solicitation',
     title: 'Solicitation Development',
-    status: 'pending' as const,
-    progress: 0,
+    status: 'active' as const,
+    progress: 75,
     items: [
-      { name: 'RFQ/RFP Generation', status: 'pending' as const, icon: FileCheck },
-      { name: 'Commercial Item Determination', status: 'pending' as const, icon: Award },
-      { name: 'OPSEC Review', status: 'pending' as const, icon: Shield },
+      { name: 'RFQ/RFP Generation', status: 'completed' as const, icon: FileCheck },
+      { name: 'Commercial Item Determination', status: 'completed' as const, icon: Award },
+      { name: 'OPSEC Review', status: 'in-progress' as const, icon: Shield },
       { name: 'Fiscal Law Review', status: 'pending' as const, icon: DollarSign }
     ]
   },
