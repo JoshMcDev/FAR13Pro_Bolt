@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 
@@ -15,7 +14,7 @@ export const ThemeToggle: React.FC = () => {
   return (
     <div className="flex items-center bg-slate-800/50 backdrop-blur-sm rounded-lg p-1 border border-slate-700/50">
       {themes.map(({ value, icon: Icon, label }) => (
-        <motion.button
+        <button
           key={value}
           onClick={() => setTheme(value)}
           className={`p-2 rounded-md transition-all duration-200 ${
@@ -24,11 +23,9 @@ export const ThemeToggle: React.FC = () => {
               : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
           }`}
           title={label}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
         >
           <Icon className="h-4 w-4" />
-        </motion.button>
+        </button>
       ))}
     </div>
   );

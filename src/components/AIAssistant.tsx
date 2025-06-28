@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, X, ArrowRight, Zap, FileText, Search, Shield } from 'lucide-react';
 
 interface AIAssistantProps {
@@ -38,103 +37,86 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose }) => 
     }, 1000);
   };
 
+  if (!isOpen) return null;
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 right-4 w-96 h-[32rem] bg-slate-800/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 z-50 flex flex-col overflow-hidden"
+    <div className="fixed bottom-4 right-4 w-96 h-[32rem] bg-slate-800/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 z-50 flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-slate-700/50 bg-gradient-to-r from-purple-900/50 to-blue-900/50">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <Brain className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <span className="font-medium text-white">AI Assistant</span>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+              <span className="text-xs text-slate-400">Online</span>
+            </div>
+          </div>
+        </div>
+        <button 
+          onClick={onClose}
+          className="text-slate-400 hover:text-white transition-colors p-1 hover:bg-slate-700/50 rounded-lg"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-slate-700/50 bg-gradient-to-r from-purple-900/50 to-blue-900/50">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <Brain className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <span className="font-medium text-white">AI Assistant</span>
-                <div className="flex items-center space-x-1">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-slate-400">Online</span>
-                </div>
-              </div>
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 p-4 overflow-y-auto space-y-4">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div className={`max-w-[80%] p-3 rounded-xl ${
+              msg.type === 'user' 
+                ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
+                : 'bg-slate-700/50 text-slate-200 border border-slate-600/50'
+            }`}>
+              <p className="text-sm">{msg.content}</p>
             </div>
-            <motion.button 
-              onClick={onClose}
-              className="text-slate-400 hover:text-white transition-colors p-1 hover:bg-slate-700/50 rounded-lg"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+          </div>
+        ))}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="p-4 border-t border-slate-700/50">
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {quickActions.map((action, index) => (
+            <button
+              key={index}
+              className="flex items-center space-x-2 p-2 bg-slate-700/30 hover:bg-slate-700/50 rounded-lg transition-all text-left"
+              onClick={() => setMessage(action.title)}
             >
-              <X className="h-5 w-5" />
-            </motion.button>
-          </div>
+              <action.icon className="h-4 w-4 text-slate-400" />
+              <div>
+                <div className="text-xs text-white font-medium">{action.title}</div>
+                <div className="text-xs text-slate-400">{action.description}</div>
+              </div>
+            </button>
+          ))}
+        </div>
 
-          {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4">
-            {messages.map((msg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`max-w-[80%] p-3 rounded-xl ${
-                  msg.type === 'user' 
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white' 
-                    : 'bg-slate-700/50 text-slate-200 border border-slate-600/50'
-                }`}>
-                  <p className="text-sm">{msg.content}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Quick Actions */}
-          <div className="p-4 border-t border-slate-700/50">
-            <div className="grid grid-cols-2 gap-2 mb-4">
-              {quickActions.map((action, index) => (
-                <motion.button
-                  key={index}
-                  className="flex items-center space-x-2 p-2 bg-slate-700/30 hover:bg-slate-700/50 rounded-lg transition-all text-left"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setMessage(action.title)}
-                >
-                  <action.icon className="h-4 w-4 text-slate-400" />
-                  <div>
-                    <div className="text-xs text-white font-medium">{action.title}</div>
-                    <div className="text-xs text-slate-400">{action.description}</div>
-                  </div>
-                </motion.button>
-              ))}
-            </div>
-
-            {/* Input */}
-            <div className="flex space-x-2">
-              <input 
-                type="text" 
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Ask about FAR 13 requirements..."
-                className="flex-1 px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-              />
-              <motion.button 
-                onClick={handleSendMessage}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-2 rounded-lg transition-all shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <ArrowRight className="h-4 w-4" />
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        {/* Input */}
+        <div className="flex space-x-2">
+          <input 
+            type="text" 
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            placeholder="Ask about FAR 13 requirements..."
+            className="flex-1 px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+          />
+          <button 
+            onClick={handleSendMessage}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-2 rounded-lg transition-all shadow-lg"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
