@@ -1,7 +1,6 @@
 import OpenAI from 'openai'
 import { createClient } from '@supabase/supabase-js'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const supabase = createClient(supabaseUrl, supabaseKey)
@@ -37,6 +36,7 @@ export class KnowledgeService {
 
   // Get OpenAI embedding for a string
   async getEmbedding(text: string): Promise<number[]> {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
     const res = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
       input: text
@@ -57,6 +57,7 @@ export class KnowledgeService {
 
   // Generate text with OpenAI (for plans, RFQs, compliance, etc.)
   async generateText(prompt: string, model = 'gpt-4') {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
     const completion = await openai.chat.completions.create({
       model,
       messages: [
