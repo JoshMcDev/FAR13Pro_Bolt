@@ -12,13 +12,12 @@ A cutting-edge web application built with Next.js, NestJS, Supabase, and AI inte
 
 ### Backend
 - **NestJS** - Scalable, TypeScript-based backend framework
-- **Supabase** - PostgreSQL database with real-time subscriptions and authentication
+- **Supabase** - PostgreSQL database with real-time subscriptions, authentication, and vector search
 - **Swagger/OpenAPI** - Comprehensive API documentation
 
 ### AI & Orchestration
-- **OpenAI API** - Advanced language model capabilities
-- **LangChain** - AI workflow management and prompt engineering
-- **Vector Search** - Semantic similarity matching for FAR regulations
+- **OpenAI API** - Advanced language model capabilities for document generation, compliance checking, and chat
+- **Supabase Vector Search** - Semantic similarity matching for FAR regulations using OpenAI embeddings and pgvector
 
 ## 🏗️ Architecture
 
@@ -39,7 +38,7 @@ lib/
 └── supabase.ts        # Supabase client configuration
 services/
 ├── ai.ts              # OpenAI integration
-├── langchain.ts       # LangChain workflows
+├── knowledge.ts       # AI and vector search workflows (OpenAI + Supabase)
 └── supabase.ts        # Database operations
 ```
 
@@ -59,7 +58,6 @@ src/
 └── ai/                       # AI services
     ├── ai.controller.ts
     ├── ai.service.ts
-    ├── langchain.service.ts
     └── dto/
 ```
 
@@ -217,12 +215,6 @@ The application will be available at:
 - **Compliance Checking**: FAR regulation validation
 - **Market Analysis**: Vendor landscape insights
 - **Conversational AI**: Natural language assistance
-
-### LangChain Workflows
-- **Knowledge Base**: FAR 13 regulation embeddings
-- **Document Processing**: Intelligent content analysis
-- **Chain of Thought**: Multi-step reasoning for complex queries
-- **Vector Search**: Semantic similarity matching
 
 ## 🗄️ Database Schema
 

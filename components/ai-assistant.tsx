@@ -25,7 +25,7 @@ export function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'ai',
-      content: 'Hello! I\'m your AI assistant powered by OpenAI and LangChain. I can help you with acquisition planning, document generation, compliance reviews, and FAR 13 requirements. What would you like assistance with today?'
+      content: 'Hello! I\'m your AI assistant powered by OpenAI. I can help you with acquisition planning, document generation, compliance reviews, and FAR 13 requirements. What would you like assistance with today?'
     }
   ])
 
@@ -57,7 +57,7 @@ export function AIAssistant() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Get instant help with acquisition planning, document generation, and compliance reviews powered by OpenAI and LangChain.
+            Get instant help with acquisition planning, document generation, and compliance reviews powered by OpenAI.
           </p>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
