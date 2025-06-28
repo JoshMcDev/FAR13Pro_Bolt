@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       prompt,
       response: result,
       ip
-    }).then(() => {}).catch((e) => console.error('Supabase log error:', e));
+    }).then(() => {}, (e) => console.error('Supabase log error:', e));
 
     return NextResponse.json({ result });
   } catch (error) {
