@@ -13,12 +13,18 @@ const quickActions = [
   { title: 'Cost Analysis', icon: Zap, description: 'Evaluate pricing strategies' }
 ]
 
+// Define the message type
+interface Message {
+  type: 'ai' | 'user';
+  content: string;
+}
+
 export function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
-      type: 'ai' as const,
+      type: 'ai',
       content: 'Hello! I\'m your AI assistant powered by OpenAI and LangChain. I can help you with acquisition planning, document generation, compliance reviews, and FAR 13 requirements. What would you like assistance with today?'
     }
   ])
@@ -26,13 +32,13 @@ export function AIAssistant() {
   const handleSendMessage = () => {
     if (!message.trim()) return
     
-    setMessages(prev => [...prev, { type: 'user' as const, content: message }])
+    setMessages(prev => [...prev, { type: 'user', content: message }])
     setMessage('')
     
     // Simulate AI response
     setTimeout(() => {
       setMessages(prev => [...prev, {
-        type: 'ai' as const,
+        type: 'ai',
         content: 'I understand you need help with that. Let me analyze your request and provide you with the most relevant information based on current FAR 13 regulations and best practices.'
       }])
     }, 1000)
