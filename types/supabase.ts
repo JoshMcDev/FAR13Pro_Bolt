@@ -82,7 +82,7 @@ export interface Database {
           acquisition_id: string
           name: string
           status: 'completed' | 'in-progress' | 'pending'
-          phase: 'planning' | 'solicitation' | 'evaluation'
+          phase: 'market-intelligence' | 'acquisition-planning' | 'solicitation' | 'evaluation' | 'award'
           order_index: number
           created_at: string
           updated_at: string
@@ -92,7 +92,7 @@ export interface Database {
           acquisition_id: string
           name: string
           status?: 'completed' | 'in-progress' | 'pending'
-          phase: 'planning' | 'solicitation' | 'evaluation'
+          phase: 'market-intelligence' | 'acquisition-planning' | 'solicitation' | 'evaluation' | 'award'
           order_index: number
           created_at?: string
           updated_at?: string
@@ -102,7 +102,7 @@ export interface Database {
           acquisition_id?: string
           name?: string
           status?: 'completed' | 'in-progress' | 'pending'
-          phase?: 'planning' | 'solicitation' | 'evaluation'
+          phase?: 'market-intelligence' | 'acquisition-planning' | 'solicitation' | 'evaluation' | 'award'
           order_index?: number
           created_at?: string
           updated_at?: string

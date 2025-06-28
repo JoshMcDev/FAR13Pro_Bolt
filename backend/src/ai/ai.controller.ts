@@ -11,7 +11,12 @@ export class AIController {
   @Post('chat')
   @ApiOperation({ summary: 'Process AI chat request' })
   @ApiResponse({ status: 200, description: 'AI response generated' })
-  async processRequest(@Body() aiRequestDto: AIRequestDto) {
-    return this.aiService.processRequest(aiRequestDto)
+  async processRequest(@Body() aiRequestDto: any) {
+    // Require userId, acquisitionId, reportType
+    const { userId, acquisitionId, reportType } = aiRequestDto
+    if (!userId || !acquisitionId || !reportType) {
+      throw new Error('userId, acquisitionId, and reportType are required for plan enforcement.')
+    }
+    return this.aiService.processRequest({ ...aiRequestDto, userId, acquisitionId, reportType })
   }
 }

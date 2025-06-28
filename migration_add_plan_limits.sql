@@ -1,0 +1,1 @@
+alter table profiles add column plan text default 'free'; alter table profiles add column workflows_this_month integer default 0; alter table profiles add column workflow_reset_date date; alter table profiles add column is_enterprise boolean default false; alter table acquisitions add column report_generations jsonb default '{}';

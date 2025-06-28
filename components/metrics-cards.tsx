@@ -1,24 +1,24 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Briefcase, Clock, CreditCard, Wallet } from 'lucide-react'
+import { Briefcase, Clock, CreditCard, Wallet, Archive } from 'lucide-react'
 
 const metrics = [
+  {
+    title: 'Total Acquisitions',
+    value: '54',
+    icon: Archive,
+    gradient: 'from-blue-500 to-cyan-500',
+  },
   {
     title: 'Active Acquisitions',
     value: '12',
     icon: Briefcase,
-    gradient: 'from-blue-500 to-cyan-500',
+    gradient: 'from-purple-500 to-pink-500',
   },
   {
     title: 'Avg. Processing Time',
     value: '8.5 days',
     icon: Clock,
     gradient: 'from-emerald-500 to-teal-500',
-  },
-  {
-    title: 'Committed Amount',
-    value: '$2.4M',
-    icon: CreditCard,
-    gradient: 'from-purple-500 to-pink-500',
   },
   {
     title: 'Obligated Amount',

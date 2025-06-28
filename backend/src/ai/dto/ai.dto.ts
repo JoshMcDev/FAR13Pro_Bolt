@@ -25,6 +25,19 @@ export class AIRequestDto {
     locationMode?: 'CONUS' | 'OCONUS'
     estimatedValue?: number
   }
+
+  // Plan enforcement fields
+  @ApiProperty()
+  @IsString()
+  userId: string
+
+  @ApiProperty()
+  @IsString()
+  acquisitionId: string
+
+  @ApiProperty()
+  @IsString()
+  reportType: string
 }
 
 export class GenerateDocumentDto {

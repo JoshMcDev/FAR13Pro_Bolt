@@ -14,7 +14,7 @@ export function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-4xl font-bold gradient-text">
             Acquisition Dashboard
@@ -23,10 +23,20 @@ export function Dashboard() {
             Streamlined FAR 13 acquisitions for operations and training.
           </p>
         </div>
-        <Button className="bg-gradient-to-r from-primary to-primary/80">
-          <Plus className="mr-2 h-4 w-4" />
-          New Acquisition
-        </Button>
+        <div className="flex gap-2 sm:gap-4 ml-auto">
+          <Button className="flex-1 min-w-[180px] max-w-xs bg-gradient-to-r from-primary to-primary/80" size="sm">
+            + New Acquisition
+          </Button>
+          <Button className="flex-1 min-w-[180px] max-w-xs bg-gradient-to-r from-primary to-primary/80" size="sm">
+            Acquisition in Progress
+          </Button>
+          <Button className="flex-1 min-w-[180px] max-w-xs bg-gradient-to-r from-primary to-primary/80" size="sm">
+            Pre Award Automation
+          </Button>
+          <Button className="flex-1 min-w-[180px] max-w-xs bg-gradient-to-r from-primary to-primary/80" size="sm">
+            Upload Template
+          </Button>
+        </div>
       </div>
 
       {/* Metrics */}

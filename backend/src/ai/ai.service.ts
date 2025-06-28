@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import OpenAI from 'openai'
 import { AIRequestDto } from './dto/ai.dto'
+import { AcquisitionsService } from '../acquisitions/acquisitions.service'
 
 @Injectable()
 export class AIService {
@@ -8,8 +9,16 @@ export class AIService {
     apiKey: process.env.OPENAI_API_KEY,
   })
 
-  async processRequest(request: AIRequestDto) {
+  constructor(private readonly acquisitionsService: AcquisitionsService) {}
+
+  async processRequest(request: AIRequestDto & { userId: string, acquisitionId: string, reportType: string }) {
     try {
+      // ENFORCE PLAN LIMITS
+      const limits = await this.acquisitionsService.checkReportGenerationLimit(request.acquisitionId, request.reportType, request.userId)
+      // Set max_tokens and Deep Research
+      const maxTokens = limits.maxTokens
+      const deepResearch = limits.deepResearch
+
       const systemPrompt = `You are an expert AI assistant specializing in Federal Acquisition Regulation (FAR) 13 simplified acquisitions for government contracting officers. 
 
 Your expertise includes:
@@ -26,6 +35,7 @@ Provide accurate, actionable guidance that helps contracting officers make infor
       const userPrompt = `Request Type: ${request.type}
 Content: ${request.content}
 ${request.context ? `Context: ${JSON.stringify(request.context)}` : ''}
+${deepResearch ? '\n[Deep Research Enabled]' : ''}
 
 Please provide a comprehensive response with specific guidance and recommendations.`
 
@@ -36,7 +46,7 @@ Please provide a comprehensive response with specific guidance and recommendatio
           { role: "user", content: userPrompt }
         ],
         temperature: 0.7,
-        max_tokens: 1500
+        max_tokens: maxTokens
       })
 
       const content = completion.choices[0]?.message?.content || 'I apologize, but I was unable to process your request. Please try again.'

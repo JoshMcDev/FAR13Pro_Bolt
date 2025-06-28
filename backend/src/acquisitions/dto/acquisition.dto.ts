@@ -1,11 +1,12 @@
 import { IsString, IsNumber, IsEnum, IsOptional, IsUUID } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
-export enum AcquisitionStatus {
-  PLANNING = 'planning',
+export enum Phase {
+  MARKET_INTELLIGENCE = 'market-intelligence',
+  ACQUISITION_PLANNING = 'acquisition-planning',
   SOLICITATION = 'solicitation',
   EVALUATION = 'evaluation',
-  AWARDED = 'awarded',
+  AWARD = 'award',
 }
 
 export enum LocationMode {
@@ -23,9 +24,9 @@ export class CreateAcquisitionDto {
   @IsString()
   description?: string
 
-  @ApiProperty({ enum: AcquisitionStatus })
-  @IsEnum(AcquisitionStatus)
-  status: AcquisitionStatus
+  @ApiProperty({ enum: Phase })
+  @IsEnum(Phase)
+  status: Phase
 
   @ApiProperty({ enum: LocationMode })
   @IsEnum(LocationMode)
@@ -56,10 +57,10 @@ export class UpdateAcquisitionDto {
   @IsString()
   description?: string
 
-  @ApiProperty({ enum: AcquisitionStatus, required: false })
+  @ApiProperty({ enum: Phase, required: false })
   @IsOptional()
-  @IsEnum(AcquisitionStatus)
-  status?: AcquisitionStatus
+  @IsEnum(Phase)
+  status?: Phase
 
   @ApiProperty({ enum: LocationMode, required: false })
   @IsOptional()

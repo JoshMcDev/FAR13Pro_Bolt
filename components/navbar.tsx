@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { Shield, Menu, X, Bell, Settings, User, ChevronDown } from 'lucide-react'
+import { Shield, Menu, X, Bell, Settings, User, ChevronDown, BookOpenCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/components/auth-provider'
 
@@ -20,7 +20,7 @@ export function Navbar() {
           <div className="flex items-center space-x-8">
             <div className="flex items-center space-x-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
-                <Shield className="h-6 w-6 text-primary-foreground" />
+                <BookOpenCheck className="h-6 w-6 text-primary-foreground" />
               </div>
               <span className="text-xl font-semibold">FAR 13 Pro</span>
             </div>
