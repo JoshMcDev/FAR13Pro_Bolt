@@ -27,7 +27,7 @@
     "@nestjs/swagger": "^7.1.17",
     "@supabase/supabase-js": "^2.39.0",
     "openai": "^4.24.1",
-    "langchain": "^0.1.0",
+    "langchain": "^0.3.30",
     "@langchain/openai": "^0.0.14",
     "class-validator": "^0.14.0",
     "class-transformer": "^0.5.1",
